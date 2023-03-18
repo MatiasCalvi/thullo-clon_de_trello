@@ -1,0 +1,27 @@
+.mc-buttonPrivate{
+    min-width: 100px;
+    background-color: rgb(207, 207, 207);
+    border-radius: 8px;
+    padding: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+.showMenuAvatar:hover{
+    cursor: pointer;
+}
+.mc-buttonPrivateAppsIcon{
+    width: 13px;
+}
+
+.mc-buttonPrivateAppsIcon-p{
+    font-size: 13px;
+    margin: 0;
+    font-weight: 500;
+    color: rgb(137, 136, 136);
+}
+
+.mc-buttonPrivate:hover{
+    cursor: pointer;
+}

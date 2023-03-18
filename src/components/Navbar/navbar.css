@@ -9,7 +9,7 @@
 }
 .nav .mc-containerNavLog .h6{
     font-weight: 600!important;
-    font-size: 18px;
+    font-size: 17px;
     width: 100%;
     text-align: center;
     padding-right: 10px;
@@ -21,34 +21,40 @@
 }
 .mc-navSubGeneral{
     display: flex;
+    align-items: center;
 }
 .mc-appsIconContainer{
     margin-left: 10px;
-    min-width: 100px;
+    min-width: 110px;
     background-color: rgb(207, 207, 207);
     border-radius: 8px;
-    padding: 5px;
+    padding: 3px;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 8px;
+    height: 50%;
 }
 .mc-appsIcon{
-    width: 20px;
+    width: 13px;
 }
 .mc-appsIcon-p{
-    font-size: 15px;
+    font-size: 13px;
     margin: 0;
     font-weight: 500;
     color: rgb(137, 136, 136);
 }
+ .mc-appsIconContainer:hover{
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.394); */
+    cursor: pointer;
+} 
 .mc-containerUserBar{
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-@media screen and (max-width: 846px){
+@media screen and (max-width: 854px){
     .mc-navGeneral{
         justify-content: space-around;
     }

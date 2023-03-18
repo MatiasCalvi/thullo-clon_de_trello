@@ -11,13 +11,9 @@ import "./navbar.css";
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
 
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -87,7 +83,7 @@ export default function Navbar(props) {
 
   return (
     <AppBar position="static">
-      <Toolbar sx={{ bgcolor: "#FFFFFF" }} className="nav">
+      <Toolbar sx={{ bgcolor: "#FFFFFF"}} className="nav">
         <div className="mc-navGeneral">
           <div className="mc-navSubGeneral">
             <div className="mc-containerNavLog">
@@ -103,7 +99,7 @@ export default function Navbar(props) {
             </div>
             <div className="mc-appsIconContainer">
               <img src={appsIcon} className="mc-appsIcon" alt="appicons" />
-              <p className="mc-appsIcon-p">All board</p>
+              <p className="mc-appsIcon-p">All Board</p>
             </div>
           </div>
           <div className="mc-containerUserBar">

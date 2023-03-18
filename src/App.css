@@ -1,1 +1,47 @@
+.container-fluid{
+    width: 100%;
+}
+.dflex{
+    display: flex;
+}
+.flexDirecCol{
+    flex-direction: column;
+}
+.flexW{
+    flex-wrap: wrap;
+}
+.jcontentCenter{
+    justify-content: center;
+}
+.jcontentSpaceArr{
+    justify-content: space-around;
+}
+.jcontentSpaceEve{
+    justify-content: space-evenly;
+}
+.jcontentSpaceBet{
+    justify-content: space-between;
+}
+.gap15{
+    gap:15px;
+}
+.bCWhite{
+    background-color: #FFFFFF;
+}
+.alingItems{
+    align-items: center;
+}
 
+.mt2{
+    margin-top: 2px;
+}
+
+.minHeight5{
+    min-height: 5vh;
+}
+.p1{
+    padding: 10px;
+}
+.m1{
+    margin: 10px;
+}
