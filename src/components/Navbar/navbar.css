@@ -1,0 +1,73 @@
+.nav{
+    display: flex;
+}
+.nav .mc-containerNavLog{
+    display: flex;
+    gap: 50px;
+    padding: 5px 0px;
+    border-right: 2px solid rgba(212, 212, 212, 0.882);
+}
+.nav .mc-containerNavLog .h6{
+    font-weight: 600!important;
+    font-size: 18px;
+    width: 100%;
+    text-align: center;
+    padding-right: 10px;
+}
+.mc-navGeneral{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+.mc-navSubGeneral{
+    display: flex;
+}
+.mc-appsIconContainer{
+    margin-left: 10px;
+    min-width: 100px;
+    background-color: rgb(207, 207, 207);
+    border-radius: 8px;
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+.mc-appsIcon{
+    width: 20px;
+}
+.mc-appsIcon-p{
+    font-size: 15px;
+    margin: 0;
+    font-weight: 500;
+    color: rgb(137, 136, 136);
+}
+.mc-containerUserBar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media screen and (max-width: 846px){
+    .mc-navGeneral{
+        justify-content: space-around;
+    }
+    .mc-navSubGeneral .mc-appsIconContainer{
+        display: none;
+    }
+    .mc-containerNavLog{
+        border: none!important;
+    }
+    .searchNavBar{
+        display: none;
+    }
+}
+
+@media screen and (max-width: 468px){
+    .nav .mc-containerNavLog{
+        gap:15px;
+    }
+    .h6{
+        font-size: 15px;
+    }
+}
