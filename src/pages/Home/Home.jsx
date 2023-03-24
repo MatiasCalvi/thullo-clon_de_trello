@@ -1,117 +1,120 @@
-import React, { useState,useRef } from "react";
+import React, { useState, useRef } from "react";
 import images from "../../images/images";
 import { Avatar } from "@mui/material";
 import { deepOrange, blue, green } from "@mui/material/colors";
 import Column from "../../components/Column/Column";
 import Row from "../../components/Row/Row";
 
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import "./home.css";
 
 export default function Home() {
   let { lockIcon, moreIcon } = images;
 
-const [columns, setColumns] = useState([
-  {
-    id: uuidv4(),
-    title: "Columna 1",
-    rows: [
-      { id: uuidv4().toString(), text: "Fila 1" },
-      { id: uuidv4().toString(), text: "Fila 2" },
-    ],
-  },
-  {
-    id: uuidv4().toString(),
-    title: "Columna 2",
-    rows: [],
-  },
-  {
-    id: uuidv4().toString(),
-    title: "Columna 3",
-    rows: [],
-  },
-]);
+  const [columns, setColumns] = useState([
+    {
+      id: uuidv4(),
+      title: "Columna 1",
+      rows: [
+        { id: uuidv4().toString(), text: "Fila 1" },
+        { id: uuidv4().toString(), text: "Fila 2" },
+      ],
+    },
+    {
+      id: uuidv4().toString(),
+      title: "Columna 2",
+      rows: [],
+    },
+    {
+      id: uuidv4().toString(),
+      title: "Columna 3",
+      rows: [],
+    },
+  ]);
 
-/* const [sourceColumnId, setSourceColumnId] = useState(null);
+  /* const [sourceColumnId, setSourceColumnId] = useState(null);
 const [sourceRowId, setSourceRowId] = useState(null); */
 
-const idCounterRef = useRef(0);
+  const idCounterRef = useRef(0);
 
-const addColumn = () => {
-  const newColumn = {
-    id: uuidv4().toString(),
-    title: `Columna ${columns.length + 1}`,
-    rows: [],
+  const addColumn = () => {
+    const newColumn = {
+      id: uuidv4().toString(),
+      title: `Columna ${columns.length + 1}`,
+      rows: [],
+    };
+    setColumns([...columns, newColumn]);
   };
-  setColumns([...columns, newColumn]);
-};
 
-const addRow = (columnId) => {
-  const newColumns = columns.map((column) => {
-    if (column.id === columnId) {
-      const newRows = [
-        ...column.rows,
-        { id: uuidv4().toString(), text: "Nueva fila" },
-      ];
-      return { ...column, rows: newRows };
+  const addRow = (columnId) => {
+    const newColumns = columns.map((column) => {
+      if (column.id === columnId) {
+        const newRows = [
+          ...column.rows,
+          { id: uuidv4().toString(), text: "Nueva fila" },
+        ];
+        return { ...column, rows: newRows };
+      }
+      return column;
+    });
+    setColumns(newColumns);
+  };
+
+  const removeRow = (columnId, rowId) => {
+    const newColumns = columns.map((column) => {
+      if (column.id === columnId) {
+        const newRows = column.rows.filter((row) => row.id !== rowId);
+        return { ...column, rows: newRows };
+      }
+      return column;
+    });
+    setColumns(newColumns);
+  };
+
+  const removeColumn = (columnId) => {
+    const newColumns = columns.filter((column) => column.id !== columnId);
+    setColumns(newColumns);
+  };
+
+  const handleDragOver = (event, columnId) => {
+    event.preventDefault();
+  };
+
+  const handleDragStart = (event, columnId, rowId) => {
+    event.dataTransfer.setData("text/plain", rowId);
+    event.dataTransfer.setData("text/col-id", columnId); // Nueva línea
+  };
+
+  const handleDrop = (event, targetColumnId) => {
+    event.preventDefault();
+    const rowId = event.dataTransfer.getData("text/plain");
+    const sourceColumnId = event.dataTransfer.getData("text/col-id");
+  
+    const draggedColumn = columns.find((column) => column.id === sourceColumnId);
+    const draggedItem = draggedColumn.rows.find((row) => row.id === rowId);
+  
+    if (sourceColumnId === targetColumnId) {
+      return; // Si la columna de origen es la misma que la columna de destino, no hacer nada.
     }
-    return column;
-  });
-  setColumns(newColumns);
-};
+  
+    const newColumns = columns.map((column) => {
+      if (column.id === targetColumnId) {
+        const newRows = [
+          ...column.rows,
+          { id: draggedItem.id, text: draggedItem.text },
+        ];
+        return { ...column, rows: newRows };
+      } else if (column.id === sourceColumnId) {
+        const newRows = column.rows.filter((row) => row.id !== rowId);
+        return { ...column, rows: newRows };
+      }
+      return column;
+    });
+  
+    setColumns(newColumns);
+  };
 
-const removeRow = (columnId, rowId) => {
-  const newColumns = columns.map((column) => {
-    if (column.id === columnId) {
-      const newRows = column.rows.filter((row) => row.id !== rowId);
-      return { ...column, rows: newRows };
-    }
-    return column;
-  });
-  setColumns(newColumns);
-};
-
-const removeColumn = (columnId) => {
-  const newColumns = columns.filter((column) => column.id !== columnId);
-  setColumns(newColumns);
-};
-
-const handleDragOver = (event, columnId) => {
-  event.preventDefault();
-};
-
-
-const handleDragStart = (event, columnId, rowId) => {
-  event.dataTransfer.setData("text/plain", rowId);
-  event.dataTransfer.setData("text/col-id", columnId); // Nueva línea
-};
-
-const handleDrop = (event, targetColumnId) => {
-  event.preventDefault();
-  const rowId = event.dataTransfer.getData("text/plain");
-  const sourceColumnId = event.dataTransfer.getData("text/col-id"); // Nueva línea
-
-  const draggedColumn = columns.find((column) => column.id === sourceColumnId);
-  const draggedItem = draggedColumn.rows.find((row) => row.id === rowId); // Modificado
-
-  const newColumns = columns.map((column) => {
-    if (column.id === targetColumnId) {
-      const newRows = [
-        ...column.rows,
-        { id: draggedItem.id, text: draggedItem.text },
-      ];
-      return { ...column, rows: newRows };
-    } else if (column.id === sourceColumnId) {
-      const newRows = column.rows.filter((row) => row.id !== rowId);
-      return { ...column, rows: newRows };
-    }
-    return column;
-  });
-
-  setColumns(newColumns);
-};
-
-  console.log(columns)
+  console.log(columns);
 
   return (
     <>
