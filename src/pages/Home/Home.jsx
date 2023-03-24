@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import images from "../../images/images";
-import Avatar from "@mui/material/Avatar";
+import { Avatar } from "@mui/material";
 import { deepOrange, blue, green } from "@mui/material/colors";
 import Column from "../../components/Column/Column";
 import Row from "../../components/Row/Row";
@@ -29,6 +29,16 @@ export default function Home() {
       rows: [],
     },
   ]);
+
+  const [sourceColumnId, setSourceColumnId] = useState(null);
+  const [sourceRowId, setSourceRowId] = useState(null);
+
+  let idCounter = 0;
+
+  const generateId = () => {
+    idCounter++;
+    return idCounter;
+  };
 
   const addColumn = () => {
     const newColumn = {
@@ -67,6 +77,42 @@ export default function Home() {
   const removeColumn = (columnId) => {
     const newColumns = columns.filter((column) => column.id !== columnId);
     setColumns(newColumns);
+  };
+
+  const handleDragStart = (event, columnId, rowId) => {
+    event.dataTransfer.setData("text/plain", rowId);
+    setSourceColumnId(columnId);
+    setSourceRowId(rowId);
+  };
+
+  const handleDragOver = (event, columnId) => {
+    event.preventDefault();
+  };
+
+  const handleDrop = (event, targetColumnId) => {
+    event.preventDefault();
+    const rowId = event.dataTransfer.getData("text/plain");
+    const draggedItem = columns
+      .find((column) => column.id === sourceColumnId)
+      .rows.find((row) => row.id == sourceRowId);
+
+    const newColumns = columns.map((column) => {
+      if (column.id === targetColumnId) {
+        const newRows = [
+          ...column.rows,
+          { id: generateId(), text: draggedItem.text },
+        ];
+        return { ...column, rows: newRows };
+      } else if (column.id === sourceColumnId) {
+        const newRows = column.rows.filter((row) => row.id !== sourceRowId);
+        return { ...column, rows: newRows };
+      }
+      return column;
+    });
+
+    setColumns(newColumns);
+    setSourceColumnId(null);
+    setSourceRowId(null);
   };
 
   return (
@@ -120,7 +166,12 @@ export default function Home() {
       <div className="container">
         <div className="columns-container">
           {columns.map((column) => (
-            <div key={column.id} className="column">
+            <div
+              key={column.id}
+              className="column"
+              onDrop={(event) => handleDrop(event, column.id)}
+              onDragOver={(event) => handleDragOver(event)}
+            >
               <div className="column-header">
                 <h2>{column.title}</h2>
                 <button onClick={() => removeColumn(column.id)}>
@@ -128,7 +179,14 @@ export default function Home() {
                 </button>
               </div>
               {column.rows.map((row) => (
-                <div key={row.id} className="row">
+                <div
+                  key={row.id}
+                  className="row"
+                  draggable
+                  onDragStart={(event) =>
+                    handleDragStart(event, column.id, row.id)
+                  }
+                >
                   <p className="row-text">{row.text}</p>
                   <button
                     className="remove-row"
@@ -142,7 +200,9 @@ export default function Home() {
             </div>
           ))}
         </div>
-        <button onClick={addColumn} className="button-agregarColumna">Add Another List<span>+</span></button>
+        <button onClick={addColumn} className="button-agregarColumna">
+          Agregar otra lista<span>+</span>
+        </button>
       </div>
     </>
   );
