@@ -1,9 +1,7 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import images from "../../images/images";
 import { Avatar } from "@mui/material";
 import { deepOrange, blue, green } from "@mui/material/colors";
-import Column from "../../components/Column/Column";
-import Row from "../../components/Row/Row";
 
 import { v4 as uuidv4 } from "uuid";
 import "./home.css";
@@ -31,11 +29,6 @@ export default function Home() {
       rows: [],
     },
   ]);
-
-  /* const [sourceColumnId, setSourceColumnId] = useState(null);
-const [sourceRowId, setSourceRowId] = useState(null); */
-
-  const idCounterRef = useRef(0);
 
   const addColumn = () => {
     const newColumn = {
@@ -82,21 +75,23 @@ const [sourceRowId, setSourceRowId] = useState(null); */
 
   const handleDragStart = (event, columnId, rowId) => {
     event.dataTransfer.setData("text/plain", rowId);
-    event.dataTransfer.setData("text/col-id", columnId); // Nueva línea
+    event.dataTransfer.setData("text/col-id", columnId); 
   };
 
   const handleDrop = (event, targetColumnId) => {
     event.preventDefault();
     const rowId = event.dataTransfer.getData("text/plain");
     const sourceColumnId = event.dataTransfer.getData("text/col-id");
-  
-    const draggedColumn = columns.find((column) => column.id === sourceColumnId);
+
+    const draggedColumn = columns.find(
+      (column) => column.id === sourceColumnId
+    );
     const draggedItem = draggedColumn.rows.find((row) => row.id === rowId);
-  
+
     if (sourceColumnId === targetColumnId) {
-      return; // Si la columna de origen es la misma que la columna de destino, no hacer nada.
+      return; 
     }
-  
+
     const newColumns = columns.map((column) => {
       if (column.id === targetColumnId) {
         const newRows = [
@@ -110,7 +105,7 @@ const [sourceRowId, setSourceRowId] = useState(null); */
       }
       return column;
     });
-  
+
     setColumns(newColumns);
   };
 
