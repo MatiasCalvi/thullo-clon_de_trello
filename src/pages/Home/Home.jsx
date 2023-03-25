@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import images from "../../images/images";
 import { Avatar } from "@mui/material";
 import { deepOrange, blue, green } from "@mui/material/colors";
@@ -75,7 +75,7 @@ export default function Home() {
 
   const handleDragStart = (event, columnId, rowId) => {
     event.dataTransfer.setData("text/plain", rowId);
-    event.dataTransfer.setData("text/col-id", columnId); 
+    event.dataTransfer.setData("text/col-id", columnId);
   };
 
   const handleDrop = (event, targetColumnId) => {
@@ -89,7 +89,7 @@ export default function Home() {
     const draggedItem = draggedColumn.rows.find((row) => row.id === rowId);
 
     if (sourceColumnId === targetColumnId) {
-      return; 
+      return;
     }
 
     const newColumns = columns.map((column) => {
@@ -110,6 +110,37 @@ export default function Home() {
   };
 
   console.log(columns);
+
+  const handleMenuClick = (event, columnId, rowId) => {
+    event.stopPropagation();
+    const menu = event.target.nextElementSibling;
+    menu.style.display = menu.style.display === "block" ? "none" : "block";
+    const buttonRect = event.target.getBoundingClientRect();
+    menu.style.top = buttonRect.bottom + "px";
+    menu.style.left = buttonRect.left + "px";
+  };
+
+  const [editingRowId, setEditingRowId] = useState(null);
+  const [newRowName, setNewRowName] = useState("");
+
+  const handleSaveRowName = (columnId, rowId, newName) => {
+    const newColumns = columns.map((column) => {
+      if (column.id === columnId) {
+        const newRows = column.rows.map((row) => {
+          if (row.id === rowId) {
+            return { ...row, text: newName };
+          } else {
+            return row;
+          }
+        });
+        return { ...column, rows: newRows };
+      } else {
+        return column;
+      }
+    });
+    setColumns(newColumns);
+  };
+  
 
   return (
     <>
@@ -183,13 +214,57 @@ export default function Home() {
                     handleDragStart(event, column.id, row.id)
                   }
                 >
-                  <p className="row-text">{row.text}</p>
-                  <button
-                    className="remove-row"
-                    onClick={() => removeRow(column.id, row.id)}
-                  >
-                    Eliminar fila
-                  </button>
+                  {editingRowId === row.id ? (
+                    <>
+                      <input
+                        value={newRowName}
+                        onChange={(event) => setNewRowName(event.target.value)}
+                      />
+                      <div className="dflex gap10 mr10">
+                        <button
+                          onClick={() => {
+                            handleSaveRowName(column.id, row.id, newRowName);
+                            setEditingRowId(null);
+                          }}
+                        >
+                          ✓
+                        </button>
+                        <button onClick={() => setEditingRowId(null)}>✘</button>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <p className="row-text">{row.text}</p>
+                      <button
+                        className="menu-button"
+                        onClick={(event) =>
+                          handleMenuClick(event, column.id, row.id)
+                        }
+                      >
+                        ...
+                      </button>
+                      <div className="dropdown-menu">
+                        <ul>
+                          <li
+                            onClick={() => {
+                              setEditingRowId(row.id);
+                              setNewRowName(row.text);
+                            }}
+                          >
+                            Editar
+                          </li>
+                          <li>Compartir</li>
+                          <li>Exportar</li>
+                        </ul>
+                      </div>
+                      <button
+                        className="remove-row"
+                        onClick={() => removeRow(column.id, row.id)}
+                      >
+                        Eliminar fila
+                      </button>
+                    </>
+                  )}
                 </div>
               ))}
               <button onClick={() => addRow(column.id)}>Agregar fila</button>

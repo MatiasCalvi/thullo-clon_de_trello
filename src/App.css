@@ -25,6 +25,9 @@
 .gap15{
     gap:15px;
 }
+.gap10{
+    gap:10px;
+}
 .bCWhite{
     background-color: #FFFFFF;
 }
@@ -44,4 +47,7 @@
 }
 .m1{
     margin: 10px;
+}
+.mr10{
+    margin-right: 10px;
 }
