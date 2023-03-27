@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import images from "../../images/images";
 import { Avatar } from "@mui/material";
 import { deepOrange, blue, green } from "@mui/material/colors";
@@ -8,6 +8,8 @@ import "./home.css";
 
 export default function Home() {
   let { lockIcon, moreIcon } = images;
+  const [editingRowId, setEditingRowId] = useState(null);
+  const [newRowName, setNewRowName] = useState("");
 
   const [columns, setColumns] = useState([
     {
@@ -111,18 +113,6 @@ export default function Home() {
 
   console.log(columns);
 
-  const handleMenuClick = (event, columnId, rowId) => {
-    event.stopPropagation();
-    const menu = event.target.nextElementSibling;
-    menu.style.display = menu.style.display === "block" ? "none" : "block";
-    const buttonRect = event.target.getBoundingClientRect();
-    menu.style.top = buttonRect.bottom + "px";
-    menu.style.left = buttonRect.left + "px";
-  };
-
-  const [editingRowId, setEditingRowId] = useState(null);
-  const [newRowName, setNewRowName] = useState("");
-
   const handleSaveRowName = (columnId, rowId, newName) => {
     const newColumns = columns.map((column) => {
       if (column.id === columnId) {
@@ -140,7 +130,15 @@ export default function Home() {
     });
     setColumns(newColumns);
   };
-  
+
+  const handleMenuClick = (event, columnId, rowId) => {
+    event.stopPropagation();
+    const menu = event.target.nextElementSibling;
+    menu.style.display = menu.style.display === "block" ? "none" : "block";
+    const buttonRect = event.target.getBoundingClientRect();
+    menu.style.top = buttonRect.bottom + "px";
+    menu.style.left = buttonRect.left + "px";
+  };
 
   return (
     <>
@@ -216,10 +214,7 @@ export default function Home() {
                 >
                   {editingRowId === row.id ? (
                     <>
-                      <input
-                        value={newRowName}
-                        onChange={(event) => setNewRowName(event.target.value)}
-                      />
+                      <input value={newRowName} onChange={(event) => setNewRowName(event.target.value)}/>
                       <div className="dflex gap10 mr10">
                         <button
                           onClick={() => {
@@ -230,7 +225,7 @@ export default function Home() {
                           ✓
                         </button>
                         <button onClick={() => setEditingRowId(null)}>✘</button>
-                      </div>
+                      </div>{" "}
                     </>
                   ) : (
                     <>
@@ -262,7 +257,7 @@ export default function Home() {
                         onClick={() => removeRow(column.id, row.id)}
                       >
                         Eliminar fila
-                      </button>
+                      </button>{" "}
                     </>
                   )}
                 </div>
