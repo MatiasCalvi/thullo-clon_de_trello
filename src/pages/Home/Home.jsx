@@ -133,7 +133,7 @@ export default function Home() {
 
   const handleMenuClick = (event, columnId, rowId) => {
     event.stopPropagation();
-    const menu = event.target.nextElementSibling;
+    const menu = document.getElementById(`menu-${columnId}-${rowId}`);
     menu.style.display = menu.style.display === "block" ? "none" : "block";
     const buttonRect = event.target.getBoundingClientRect();
     menu.style.top = buttonRect.bottom + "px";
@@ -236,9 +236,9 @@ export default function Home() {
                           handleMenuClick(event, column.id, row.id)
                         }
                       >
-                        ...
+                         <img src={moreIcon} alt=""/>
                       </button>
-                      <div className="dropdown-menu">
+                      <div id={`menu-${column.id}-${row.id}`} className="dropdown-menu">
                         <ul>
                           <li
                             onClick={() => {

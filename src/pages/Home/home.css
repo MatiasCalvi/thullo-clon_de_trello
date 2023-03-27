@@ -136,6 +136,17 @@
   background-color: #f2f2f2;
 }
 
+.menu-button{
+  width: 30px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+}
+
+.menu-button img{
+  width: 100%;
+}
+
 .menu-button:hover + .dropdown-menu,
 .dropdown-menu:hover {
   display: block;
