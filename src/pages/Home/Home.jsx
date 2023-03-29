@@ -13,7 +13,7 @@ import {
 } from "firebase/storage";
 
 export default function Home() {
-  let { lockIcon, moreIcon } = images;
+  let { lockIcon, moreIcon, account } = images;
   const [editingRowId, setEditingRowId] = useState(null);
   const [newRowName, setNewRowName] = useState("");
   const [showModal, setShowModal] = useState(false);
@@ -213,8 +213,38 @@ export default function Home() {
               </div>
               {showModal ? (
                 <div className="modal">
-                  <h3>{`Nombre: ${selectedRow.text} Id: ${selectedRow.id} `}</h3>
-                  <button onClick={() => setShowModal(false)}>Cerrar</button>
+                  <div className="modal-containerImg">
+                    <img
+                      src="https://a4.espncdn.com/combiner/i?img=%2Fphoto%2F2022%2F1231%2Fr1112335_1296x729_16%2D9.jpg"
+                      alt=""
+                      draggable="false"
+                    />
+                    <button
+                      className="modal-close"
+                      onClick={() => setShowModal(false)}
+                    >
+                      ✘
+                    </button>
+                  </div>
+                  <div className="modal-body">
+                    <div className="modal-bodyC1">
+                      <h3 className="modal-title">{`✌️ ${selectedRow.text} `}</h3>
+                      <p className="modal-subtitle">
+                        In the list{" "}
+                        <span className="modal-titleList">{`${selectedRow.text}`}</span>
+                      </p>
+                    </div>
+                    <div className="modal-bodyC2">
+                      <div className="modal-bodyC2-c1">
+                        <img src={account} draggable="false" alt="" />
+                        <h5>Actions</h5>
+                      </div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                    </div>
+                  </div>
                 </div>
               ) : null}
               {column.rows.map((row) => (
@@ -237,7 +267,7 @@ export default function Home() {
                         onChange={(event) => {
                           setNewRowName(event.target.value);
                         }}
-                        onClick={(e)=>e.stopPropagation()}
+                        onClick={(e) => e.stopPropagation()}
                       />
                       <div className="dflex gap10 mr10">
                         <button
@@ -290,7 +320,10 @@ export default function Home() {
                       </div>
                       <button
                         className="remove-row"
-                        onClick={() => removeRow(column.id, row.id)}
+                        onClick={(e) => {
+                          removeRow(column.id, row.id);
+                          e.stopPropagation();
+                        }}
                       >
                         Eliminar fila
                       </button>{" "}
