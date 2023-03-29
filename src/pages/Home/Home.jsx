@@ -5,19 +5,27 @@ import { deepOrange, blue, green } from "@mui/material/colors";
 
 import { v4 as uuidv4 } from "uuid";
 import "./home.css";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
 
 export default function Home() {
   let { lockIcon, moreIcon } = images;
   const [editingRowId, setEditingRowId] = useState(null);
   const [newRowName, setNewRowName] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
 
   const [columns, setColumns] = useState([
     {
       id: uuidv4(),
       title: "Columna 1",
       rows: [
-        { id: uuidv4().toString(), text: "Fila 1" },
-        { id: uuidv4().toString(), text: "Fila 2" },
+        { id: uuidv4().toString(), text: "Fila 1", imageUrl: "" },
+        { id: uuidv4().toString(), text: "Fila 2", imageUrl: "" },
       ],
     },
     {
@@ -203,6 +211,12 @@ export default function Home() {
                   Eliminar columna
                 </button>
               </div>
+              {showModal ? (
+                <div className="modal">
+                  <h3>{`Nombre: ${selectedRow.text} Id: ${selectedRow.id} `}</h3>
+                  <button onClick={() => setShowModal(false)}>Cerrar</button>
+                </div>
+              ) : null}
               {column.rows.map((row) => (
                 <div
                   key={row.id}
@@ -211,20 +225,38 @@ export default function Home() {
                   onDragStart={(event) =>
                     handleDragStart(event, column.id, row.id)
                   }
+                  onClick={() => {
+                    setSelectedRow(row);
+                    setShowModal(true);
+                  }}
                 >
                   {editingRowId === row.id ? (
                     <>
-                      <input value={newRowName} onChange={(event) => setNewRowName(event.target.value)}/>
+                      <input
+                        value={newRowName}
+                        onChange={(event) => {
+                          setNewRowName(event.target.value);
+                        }}
+                        onClick={(e)=>e.stopPropagation()}
+                      />
                       <div className="dflex gap10 mr10">
                         <button
-                          onClick={() => {
+                          onClick={(e) => {
                             handleSaveRowName(column.id, row.id, newRowName);
                             setEditingRowId(null);
+                            e.stopPropagation();
                           }}
                         >
                           ✓
                         </button>
-                        <button onClick={() => setEditingRowId(null)}>✘</button>
+                        <button
+                          onClick={(e) => {
+                            setEditingRowId(null);
+                            e.stopPropagation();
+                          }}
+                        >
+                          ✘
+                        </button>
                       </div>{" "}
                     </>
                   ) : (
@@ -236,14 +268,18 @@ export default function Home() {
                           handleMenuClick(event, column.id, row.id)
                         }
                       >
-                         <img src={moreIcon} alt=""/>
+                        <img src={moreIcon} alt="options" />
                       </button>
-                      <div id={`menu-${column.id}-${row.id}`} className="dropdown-menu">
+                      <div
+                        id={`menu-${column.id}-${row.id}`}
+                        className="dropdown-menu"
+                      >
                         <ul>
                           <li
-                            onClick={() => {
+                            onClick={(e) => {
                               setEditingRowId(row.id);
                               setNewRowName(row.text);
+                              e.stopPropagation();
                             }}
                           >
                             Editar

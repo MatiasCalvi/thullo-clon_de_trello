@@ -151,3 +151,34 @@
 .dropdown-menu:hover {
   display: block;
 }
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  min-width: 300px;
+  height: auto;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.modal h3 {
+  margin-top: 0;
+}
+
+.modal button {
+  background-color: #4caf50;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.modal button:hover {
+  background-color: #3e8e41;
+}
