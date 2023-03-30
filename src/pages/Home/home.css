@@ -226,6 +226,9 @@
 }
 .modal-bodyC2{
   min-width: 12vw;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 .modal-bodyC2-c1{
   display: flex;
@@ -235,8 +238,24 @@
 .modal-bodyC2-c1 h5{
   margin: 3px 0 0 0;
 }
-.modal-bodyC2-c1 img{
+.modal-bodyC2-c1 img,.modal-bodyC2-label img{
   width: 20px;
+}
+.modal-bodyC2-label{
+  display: flex;
+  padding: 8px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  gap: 10px;
+  border: none;
+  font-weight: 600;
+  color:#999999
+}
+.modal-bodyC2-label:hover {
+  background-color: #f5f5f5;
+  color: #333333;
+  cursor: pointer;
 }
 @media screen and (max-width: 1300px){
   .modal {

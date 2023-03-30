@@ -13,7 +13,7 @@ import {
 } from "firebase/storage";
 
 export default function Home() {
-  let { lockIcon, moreIcon, account } = images;
+  let { lockIcon, moreIcon, account, group, label, image } = images;
   const [editingRowId, setEditingRowId] = useState(null);
   const [newRowName, setNewRowName] = useState("");
   const [showModal, setShowModal] = useState(false);
@@ -239,10 +239,18 @@ export default function Home() {
                         <img src={account} draggable="false" alt="" />
                         <h5>Actions</h5>
                       </div>
-                      <div></div>
-                      <div></div>
-                      <div></div>
-                      <div></div>
+                      <button className="modal-bodyC2-label">
+                        <img src={group} draggable="false" alt="" />
+                        Members
+                      </button>
+                      <button className="modal-bodyC2-label">
+                        <img src={label} draggable="false" alt="" />
+                        Labels
+                      </button>
+                      <button className="modal-bodyC2-label">
+                        <img src={image} draggable="false" alt="" />
+                        Cover
+                      </button>
                     </div>
                   </div>
                 </div>
