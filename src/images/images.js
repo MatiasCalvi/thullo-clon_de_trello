@@ -6,6 +6,8 @@ import account from "../images/account.png"
 import group from "../images/group.png"
 import label from "../images/label.png"
 import image from "../images/image.png"
+import description from "../images/description.png"
+import pencil from "../images/pencil.png"
 
 const images = {
     Logo,
@@ -16,6 +18,8 @@ const images = {
     group,
     label,
     image,
+    description,
+    pencil,
 }
 
 export default images 

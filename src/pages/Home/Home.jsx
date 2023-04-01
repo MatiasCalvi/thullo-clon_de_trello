@@ -13,29 +13,49 @@ import {
 } from "firebase/storage";
 
 export default function Home() {
-  let { lockIcon, moreIcon, account, group, label, image } = images;
+  let {
+    lockIcon,
+    moreIcon,
+    account,
+    group,
+    label,
+    image,
+    description,
+    pencil,
+  } = images;
   const [editingRowId, setEditingRowId] = useState(null);
   const [newRowName, setNewRowName] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
+  const [selectColumn, setSelectColumn] = useState(null);
 
   const [columns, setColumns] = useState([
     {
       id: uuidv4(),
-      title: "Columna 1",
+      title: "Backlog",
       rows: [
-        { id: uuidv4().toString(), text: "Fila 1", imageUrl: "" },
-        { id: uuidv4().toString(), text: "Fila 2", imageUrl: "" },
+        {
+          id: uuidv4().toString(),
+          text: "✌ Add What you'd like to work on below",
+          imageUrl: "",
+        },
+        { id: uuidv4().toString(), text: "Github challenge", imageUrl: "" },
       ],
     },
     {
       id: uuidv4().toString(),
-      title: "Columna 2",
-      rows: [],
+      title: "In Progress",
+      rows: [
+        {
+          id: uuidv4().toString(),
+          text: "✌ Move Anything that is actually started here",
+          imageUrl: "",
+        },
+      ],
     },
     {
       id: uuidv4().toString(),
-      title: "Columna 3",
+      title: "In Review",
       rows: [],
     },
   ]);
@@ -150,7 +170,7 @@ export default function Home() {
 
   return (
     <>
-      <div className=" dflex jcontentSpaceBet bCWhite mt2 minHeight5 alingItems p1">
+      <div className=" dflex jcontentSpaceBet bCWhite mt2 minHeight5 alingItems p1 flexW">
         <div className="dflex gap15 p1 alingItems">
           <div className="mc-buttonPrivate">
             <img
@@ -207,9 +227,7 @@ export default function Home() {
             >
               <div className="column-header">
                 <h2>{column.title}</h2>
-                <button onClick={() => removeColumn(column.id)}>
-                  Eliminar columna
-                </button>
+                <button onClick={() => removeColumn(column.id)}>✘</button>
               </div>
               {showModal ? (
                 <div className="modal">
@@ -228,11 +246,27 @@ export default function Home() {
                   </div>
                   <div className="modal-body">
                     <div className="modal-bodyC1">
-                      <h3 className="modal-title">{`✌️ ${selectedRow.text} `}</h3>
-                      <p className="modal-subtitle">
-                        In the list{" "}
-                        <span className="modal-titleList">{`${selectedRow.text}`}</span>
-                      </p>
+                      <div>
+                        <h3 className="modal-title">{`${selectedRow.text} `}</h3>
+                        <p className="modal-subtitle">
+                          In the list{" "}
+                          <span className="modal-titleList">{`${selectColumn.title}`}</span>
+                        </p>
+                      </div>
+                      <div className="modal-description-container">
+                        <div className="modal-description">
+                          <img
+                            className="modal-photeDescription"
+                            src={description}
+                            draggable="false"
+                            alt=""
+                          />
+                          <h5>Description</h5>
+                        </div>
+                        <button className="modal-edit-button">
+                          <img className="modal-photeDescription" draggable="false" src={pencil} alt=""></img><h5 className="m0">Edit</h5>
+                        </button>
+                      </div>
                     </div>
                     <div className="modal-bodyC2">
                       <div className="modal-bodyC2-c1">
@@ -265,6 +299,7 @@ export default function Home() {
                   }
                   onClick={() => {
                     setSelectedRow(row);
+                    setSelectColumn(column);
                     setShowModal(true);
                   }}
                 >
@@ -333,7 +368,7 @@ export default function Home() {
                           e.stopPropagation();
                         }}
                       >
-                        Eliminar fila
+                        ✘
                       </button>{" "}
                     </>
                   )}
