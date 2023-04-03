@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 import images from "../../images/images";
 import { Avatar } from "@mui/material";
 import { deepOrange, blue, green } from "@mui/material/colors";
+import { Button, TextField, Paper, Typography } from "@mui/material";
+import { makeStyles } from "@mui/styles";
+import SaveIcon from "@mui/icons-material/Save";
+import EditIcon from "@mui/icons-material/Edit";
 
 import { v4 as uuidv4 } from "uuid";
 import "./home.css";
@@ -11,6 +15,57 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from "firebase/storage";
+
+const useStyles = makeStyles({
+  buttonSave: {
+    backgroundColor: "green !important",
+    color: "white !important",
+    paddingRight: "15px!important",
+    "&:hover !important": {
+      backgroundColor: "darkpurple !important",
+    },
+    textTransform: "capitalize !important",
+  },
+  textArea: {
+    width: "100%",
+  },
+  buttonEdit: {
+    color: "white !important",
+    textTransform: "capitalize !important",
+    backgroundColor: "green !important",
+    paddingRight: "18px!important",
+    "&:hover": {
+      backgroundColor: "darkgreen !important",
+    },
+  },
+  container: {
+    position: "relative",
+    minHeight: 200,
+    backgroundColor: "#f1f1f1",
+    "&:hover": {
+      backgroundColor: "#dcdcdc",
+    },
+  },
+  tooltip: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    textAlign: "center",
+    opacity: 0,
+    transition: "opacity 0.2s ease-in-out",
+    "&:hover": {
+      opacity: 1,
+    },
+  },
+  message: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    textAlign: "center",
+  },
+});
 
 export default function Home() {
   let {
@@ -22,7 +77,10 @@ export default function Home() {
     image,
     description,
     pencil,
+    save,
   } = images;
+  const classes = useStyles();
+
   const [editingRowId, setEditingRowId] = useState(null);
   const [newRowName, setNewRowName] = useState("");
   const [showModal, setShowModal] = useState(false);
@@ -168,6 +226,16 @@ export default function Home() {
     menu.style.left = buttonRect.left + "px";
   };
 
+  const [editMode, setEditMode] = useState(false);
+
+  const handleEditClick = () => {
+    setEditMode(true);
+  };
+
+  const handleSaveClick = () => {
+    setEditMode(false);
+  };
+
   return (
     <>
       <div className=" dflex jcontentSpaceBet bCWhite mt2 minHeight5 alingItems p1 flexW">
@@ -263,10 +331,54 @@ export default function Home() {
                           />
                           <h5>Description</h5>
                         </div>
-                        <button className="modal-edit-button">
-                          <img className="modal-photeDescription" draggable="false" src={pencil} alt=""></img><h5 className="m0">Edit</h5>
-                        </button>
+                        {!editMode ? (
+                          <Button
+                            className={classes.buttonEdit}
+                            onClick={handleEditClick}
+                            startIcon={<EditIcon />}
+                          >
+                            Edit
+                          </Button>
+                        ) : (
+                          <Button
+                            className={classes.buttonSave}
+                            onClick={handleSaveClick}
+                            startIcon={<SaveIcon />}
+                          >
+                            Save
+                          </Button>
+                        )}
                       </div>
+                      {editMode ? (
+                        <div className="modal-notation">
+                          <TextField
+                            id="filled-multiline-static"
+                            label="Multiline"
+                            multiline
+                            rows={4}
+                            defaultValue="Default Value"
+                            variant="filled"
+                            className={classes.textArea}
+                          />
+                        </div>
+                      ) : (
+                        <div className="modal-notation">
+                          <Paper className={classes.container}>
+                            <div className={classes.tooltip}>
+                              <Typography variant="body1">
+                                If you want to write a description for this
+                                card, click on the "edit" button.
+                              </Typography>
+                            </div>
+                            <div className={classes.message}>
+                              <Typography variant="body1">
+                                If you want to write a description for this
+                                card, click on the "edit" button.
+                              </Typography>
+                            </div>
+                          </Paper>
+                        </div>
+                      )}
                     </div>
                     <div className="modal-bodyC2">
                       <div className="modal-bodyC2-c1">
@@ -385,3 +497,12 @@ export default function Home() {
     </>
   );
 }
+
+/* <p>Ideas are created and share here through a card.<br/>
+                          Here you can describe what you´d like to accomplish.<br/>
+                          For example you can follow three simple questions to create the card related to your idea:<br/>
+                          * Why? (Why do you wish to do it?)<br/>
+                          * What (What it is it, what are the goals, who is concerned)<br/>
+                          * How? (How do you think you can do it? What are the required steps?)<br/>
+                          After creation, you can move your card to the todo list.
+                        </p> */

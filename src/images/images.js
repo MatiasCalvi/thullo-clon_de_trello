@@ -8,6 +8,7 @@ import label from "../images/label.png"
 import image from "../images/image.png"
 import description from "../images/description.png"
 import pencil from "../images/pencil.png"
+import save from "../images/save.png"
 
 const images = {
     Logo,
@@ -20,6 +21,7 @@ const images = {
     image,
     description,
     pencil,
+    save
 }
 
 export default images 
