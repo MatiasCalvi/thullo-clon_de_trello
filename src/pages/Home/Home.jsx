@@ -295,7 +295,14 @@ export default function Home() {
             >
               <div className="column-header">
                 <h2>{column.title}</h2>
-                <button onClick={() => removeColumn(column.id)}>✘</button>
+                <button
+                  onClick={(e) => {
+                    removeColumn(column.id);
+                    e.stopPropagation();
+                  }}
+                >
+                  ✘
+                </button>
               </div>
               {showModal ? (
                 <div className="modal">
@@ -367,7 +374,7 @@ export default function Home() {
                             <div className={classes.tooltip}>
                               <Typography variant="body1">
                                 If you want to write a description for this
-                                card, click on the "edit" button.
+                                card, click on the "Edit" button.
                               </Typography>
                             </div>
                             <div className={classes.message}>
