@@ -42,9 +42,6 @@ const useStyles = makeStyles({
     position: "relative",
     minHeight: 200,
     backgroundColor: "#f1f1f1",
-    "&:hover": {
-      backgroundColor: "#dcdcdc",
-    },
   },
   tooltip: {
     position: "absolute",
@@ -54,9 +51,6 @@ const useStyles = makeStyles({
     textAlign: "center",
     opacity: 0,
     transition: "opacity 0.2s ease-in-out",
-    "&:hover": {
-      opacity: 1,
-    },
   },
   message: {
     position: "absolute",
@@ -227,13 +221,26 @@ export default function Home() {
   };
 
   const [editMode, setEditMode] = useState(false);
+  const [valueDescription, setValueDescription] = useState("");
 
   const handleEditClick = () => {
     setEditMode(true);
   };
 
-  const handleSaveClick = () => {
+  const handleSaveClick = (rowId, value) => {
     setEditMode(false);
+    setColumns((prevColumns) => {
+      const newColumns = [...prevColumns];
+      for (let column of newColumns) {
+        for (let row of column.rows) {
+          if (row.id === rowId) {
+            row.description = value;
+            break;
+          }
+        }
+      }
+      return newColumns;
+    });
   };
 
   return (
@@ -349,7 +356,12 @@ export default function Home() {
                         ) : (
                           <Button
                             className={classes.buttonSave}
-                            onClick={handleSaveClick}
+                            onClick={() => {
+                              handleSaveClick(
+                                selectedRow?.id,
+                                valueDescription
+                              );
+                            }}
                             startIcon={<SaveIcon />}
                           >
                             Save
@@ -360,30 +372,51 @@ export default function Home() {
                         <div className="modal-notation">
                           <TextField
                             id="filled-multiline-static"
-                            label="Multiline"
                             multiline
                             rows={4}
-                            defaultValue="Default Value"
+                            defaultValue={
+                              valueDescription
+                                ? valueDescription
+                                : "Write the description of this card"
+                            }
+                            onChange={(e) =>
+                              setValueDescription(e.target.value)
+                            }
                             variant="filled"
                             className={classes.textArea}
                           />
                         </div>
                       ) : (
                         <div className="modal-notation">
-                          <Paper className={classes.container}>
-                            <div className={classes.tooltip}>
-                              <Typography variant="body1">
-                                If you want to write a description for this
-                                card, click on the "Edit" button.
-                              </Typography>
-                            </div>
-                            <div className={classes.message}>
-                              <Typography variant="body1">
-                                If you want to write a description for this
-                                card, click on the "edit" button.
-                              </Typography>
-                            </div>
-                          </Paper>
+                          {valueDescription !== "" ? (
+                            <Paper className={classes.container}>
+                              <div className={classes.tooltip}>
+                                <Typography variant="body1">
+                                  {valueDescription}
+                                </Typography>
+                              </div>
+                              <div className={classes.message}>
+                                <Typography variant="body1">
+                                  {valueDescription}
+                                </Typography>
+                              </div>
+                            </Paper>
+                          ) : (
+                            <Paper className={classes.container}>
+                              <div className={classes.tooltip}>
+                                <Typography variant="body1">
+                                  If you want to write a description for this
+                                  card, click on the "Edit" button.
+                                </Typography>
+                              </div>
+                              <div className={classes.message}>
+                                <Typography variant="body1">
+                                  If you want to write a description for this
+                                  card, click on the "Edit" button.
+                                </Typography>
+                              </div>
+                            </Paper>
+                          )}
                         </div>
                       )}
                     </div>
