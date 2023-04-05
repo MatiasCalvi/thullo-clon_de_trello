@@ -45,12 +45,10 @@ const useStyles = makeStyles({
     padding:'10px',
     backgroundColor: "#f1f1f1",
     display:'flex',
-    alignItems:'center'
   },
   textCenter:{
     textAlign:'center',
-    marginTop:'20px'
-  }
+  },
 });
 
 export default function Home() {

@@ -11,7 +11,7 @@
     flex-wrap: wrap;
 }
 .jcontentCenter{
-    justify-content: center;
+    justify-content: center!important;
 }
 .jcontentSpaceArr{
     justify-content: space-around;

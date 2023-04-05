@@ -221,6 +221,8 @@
 .modal-body{
   display: flex;
   gap: 20px;
+  overflow-y: auto;
+  max-height: 50vh;
 }
 .modal-bodyC1{
   min-width: 28vw;
