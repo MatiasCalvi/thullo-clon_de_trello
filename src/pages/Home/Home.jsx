@@ -15,6 +15,7 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from "firebase/storage";
+import { margin } from "@mui/system";
 
 const useStyles = makeStyles({
   buttonSave: {
@@ -40,25 +41,16 @@ const useStyles = makeStyles({
   },
   container: {
     position: "relative",
-    minHeight: 200,
+    minHeight: 250,
+    padding:'10px',
     backgroundColor: "#f1f1f1",
+    display:'flex',
+    alignItems:'center'
   },
-  tooltip: {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    textAlign: "center",
-    opacity: 0,
-    transition: "opacity 0.2s ease-in-out",
-  },
-  message: {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    textAlign: "center",
-  },
+  textCenter:{
+    textAlign:'center',
+    marginTop:'20px'
+  }
 });
 
 export default function Home() {
@@ -89,6 +81,7 @@ export default function Home() {
         {
           id: uuidv4().toString(),
           text: "✌ Add What you'd like to work on below",
+          description: "",
           imageUrl: "",
         },
         { id: uuidv4().toString(), text: "Github challenge", imageUrl: "" },
@@ -101,6 +94,7 @@ export default function Home() {
         {
           id: uuidv4().toString(),
           text: "✌ Move Anything that is actually started here",
+          description: "",
           imageUrl: "",
         },
       ],
@@ -164,16 +158,18 @@ export default function Home() {
     event.preventDefault();
     const rowId = event.dataTransfer.getData("text/plain");
     const sourceColumnId = event.dataTransfer.getData("text/col-id");
-
-    const draggedColumn = columns.find(
-      (column) => column.id === sourceColumnId
-    );
+  
+    if (!rowId || !sourceColumnId) {
+      return;
+    }
+  
+    const draggedColumn = columns.find((column) => column.id === sourceColumnId);
     const draggedItem = draggedColumn.rows.find((row) => row.id === rowId);
-
+  
     if (sourceColumnId === targetColumnId) {
       return;
     }
-
+  
     const newColumns = columns.map((column) => {
       if (column.id === targetColumnId) {
         const newRows = [
@@ -187,7 +183,7 @@ export default function Home() {
       }
       return column;
     });
-
+  
     setColumns(newColumns);
   };
 
@@ -373,14 +369,15 @@ export default function Home() {
                           <TextField
                             id="filled-multiline-static"
                             multiline
-                            rows={4}
+                            rows={10}
                             defaultValue={
                               valueDescription
                                 ? valueDescription
                                 : "Write the description of this card"
                             }
-                            onChange={(e) =>
-                              setValueDescription(e.target.value)
+                            onChange={(e) =>{
+                              setValueDescription(e.target.value);
+                              e.stopPropagation()}
                             }
                             variant="filled"
                             className={classes.textArea}
@@ -390,26 +387,15 @@ export default function Home() {
                         <div className="modal-notation">
                           {valueDescription !== "" ? (
                             <Paper className={classes.container}>
-                              <div className={classes.tooltip}>
+                              <div className={classes.message} style={{ whiteSpace: "pre-wrap" }}>
                                 <Typography variant="body1">
-                                  {valueDescription}
-                                </Typography>
-                              </div>
-                              <div className={classes.message}>
-                                <Typography variant="body1">
-                                  {valueDescription}
+                                <span>{valueDescription}</span>
                                 </Typography>
                               </div>
                             </Paper>
                           ) : (
                             <Paper className={classes.container}>
-                              <div className={classes.tooltip}>
-                                <Typography variant="body1">
-                                  If you want to write a description for this
-                                  card, click on the "Edit" button.
-                                </Typography>
-                              </div>
-                              <div className={classes.message}>
+                              <div className={classes.textCenter}>
                                 <Typography variant="body1">
                                   If you want to write a description for this
                                   card, click on the "Edit" button.
