@@ -42,12 +42,17 @@ const useStyles = makeStyles({
   container: {
     position: "relative",
     minHeight: 250,
-    padding:'10px',
+    padding: "10px",
     backgroundColor: "#f1f1f1",
-    display:'flex',
+    display: "flex",
+    flexDirection: "column",
   },
-  textCenter:{
-    textAlign:'center',
+  textCenter: {
+    textAlign: "center",
+  },
+  modalNotation: {
+    overflowY: "scroll",
+    height: "300px",
   },
 });
 
@@ -156,18 +161,20 @@ export default function Home() {
     event.preventDefault();
     const rowId = event.dataTransfer.getData("text/plain");
     const sourceColumnId = event.dataTransfer.getData("text/col-id");
-  
+
     if (!rowId || !sourceColumnId) {
       return;
     }
-  
-    const draggedColumn = columns.find((column) => column.id === sourceColumnId);
+
+    const draggedColumn = columns.find(
+      (column) => column.id === sourceColumnId
+    );
     const draggedItem = draggedColumn.rows.find((row) => row.id === rowId);
-  
+
     if (sourceColumnId === targetColumnId) {
       return;
     }
-  
+
     const newColumns = columns.map((column) => {
       if (column.id === targetColumnId) {
         const newRows = [
@@ -181,7 +188,7 @@ export default function Home() {
       }
       return column;
     });
-  
+
     setColumns(newColumns);
   };
 
@@ -373,34 +380,37 @@ export default function Home() {
                                 ? valueDescription
                                 : "Write the description of this card"
                             }
-                            onChange={(e) =>{
+                            onChange={(e) => {
                               setValueDescription(e.target.value);
-                              e.stopPropagation()}
-                            }
+                              e.stopPropagation();
+                            }}
                             variant="filled"
                             className={classes.textArea}
                           />
                         </div>
-                      ) : (
-                        <div className="modal-notation">
-                          {valueDescription !== "" ? (
-                            <Paper className={classes.container}>
-                              <div className={classes.message} style={{ whiteSpace: "pre-wrap" }}>
-                                <Typography variant="body1">
+                      ) : valueDescription !== "" ? (
+                        <div className={classes.modalNotation}>
+                          <Paper className={classes.container}>
+                            <div
+                              className={classes.message}
+                              style={{ whiteSpace: "pre-wrap" }}
+                            >
+                              <Typography variant="body1">
                                 <span>{valueDescription}</span>
-                                </Typography>
-                              </div>
-                            </Paper>
-                          ) : (
-                            <Paper className={classes.container}>
-                              <div className={classes.textCenter}>
-                                <Typography variant="body1">
-                                  If you want to write a description for this
-                                  card, click on the "Edit" button.
-                                </Typography>
-                              </div>
-                            </Paper>
-                          )}
+                              </Typography>
+                            </div>
+                          </Paper>
+                        </div>
+                      ) : (
+                        <div>
+                          <Paper className={classes.container}>
+                            <div className={classes.textCenter}>
+                              <Typography variant="body1">
+                                If you want to write a description for this
+                                card, click on the "Edit" button.
+                              </Typography>
+                            </div>
+                          </Paper>
                         </div>
                       )}
                     </div>

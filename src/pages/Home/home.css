@@ -221,8 +221,6 @@
 .modal-body{
   display: flex;
   gap: 20px;
-  overflow-y: auto;
-  max-height: 50vh;
 }
 .modal-bodyC1{
   min-width: 28vw;
@@ -286,12 +284,13 @@
   background-color: transparent;
 }
 
-
-
-@media screen and (max-width: 1300px){
+@media screen and (max-width: 2100px){
   .modal {
     width: 70vw;
   }
+}
+
+@media screen and (max-width: 1300px){
   .modal-bodyC1{
     min-width: 40vw;
   }
